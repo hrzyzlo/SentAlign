@@ -294,7 +294,7 @@ def write_pairs_to_file(pairs, file_name, total_score):
             ctr += 1
             if outstring.find('NULLALIGN') == -1:
                 fo.write(outstring)
-            else 
+            else:
                 fo.write('---\n')
                
 
