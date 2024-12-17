@@ -292,10 +292,7 @@ def write_pairs_to_file(pairs, file_name, total_score):
         for p in pairs:
             outstring = p[0] + '\t' + p[1] + '\t' + p[2] + '\n'
             ctr += 1
-            if outstring.find('NULLALIGN') == -1:
                 fo.write(outstring)
-            else:
-                fo.write('---\n')
                
 
 
