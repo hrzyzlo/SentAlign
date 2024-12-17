@@ -246,26 +246,41 @@ def get_pairs(path, source_dict, target_dict, total_score):
     score_list = total_score.strip().split('\n')
     ctr = 0
     for p in path_pairs:
-        s,t = p.strip().replace('[','').replace(']','').split(':')
+        s, t = p.strip().replace('[', '').replace(']', '').split(':')
         s_nums = s.split(',')
         t_nums = t.split(',')
         source_out = ''
         target_out = ''
+
+        # Check source dictionary entries
         if '' not in s_nums:
             for s_num in s_nums:
-                source_out += ' ' + source_dict[int(s_num)]
+                if int(s_num) in source_dict:
+                    source_out += ' ' + source_dict[int(s_num)]
+                else:
+                    source_out += ' ---'  # Placeholder if index is missing
             source_out = source_out.strip().lstrip()
         else:
-            source_out = 'NULLALIGN'
+            source_out = '---'  # Replace 'NULLALIGN' with '---'
+
+        # Check target dictionary entries
         if '' not in t_nums:
             for t_num in t_nums:
-                target_out += ' ' + target_dict[int(t_num)]
+                if int(t_num) in target_dict:
+                    target_out += ' ' + target_dict[int(t_num)]
+                else:
+                    target_out += ' ---'  # Placeholder if index is missing
             target_out = target_out.strip().lstrip()
         else:
-            target_out = 'NULLALIGN'
-        pairs.append([source_out, target_out, score_list[ctr]])
+            target_out = '---'  # Replace 'NULLALIGN' with '---'
+
+        # Append the result, ensuring a fallback for missing scores
+        score = score_list[ctr] if ctr < len(score_list) else '0.0'  # Default score
+        pairs.append([source_out, target_out, score])
         ctr += 1
+
     return pairs
+
 
 
 def write_path_to_file(path, file_name, total_score):
